@@ -29,6 +29,7 @@
         <arg name="scan_topic"              default="/scan"/>
         <arg name="rtabmapviz" value="false"/>
         <arg name="rviz" value="false"/>
+        <!-- <remap from="grid_map" to="map" /> -->
     </include>
 
     <include file="$(find robot_localization)/launch/ukf_template.launch"/>
