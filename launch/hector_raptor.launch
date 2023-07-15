@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<launch>
+<!--  -->
+  <include file="$(find raptor_description)/launch/raptor_rsp.launch" />
+  <node name="shoes" pkg="rosserial_arduino" type="serial_node.py" args="/dev/ttyACM0" />
+  <node name="odometry_node" pkg="raptor_base" type="odometry.py" />
+  <node pkg="tf" type="static_transform_publisher" name="base_foot_bc" args="0 0 0 0 0 0 base_link base_footprint 100" />  
+  <node pkg="tf" type="static_transform_publisher" name="base_cam_bc" args="-0.16 0 0.93 0 0 0 base_link camera_link 100" />
+
+  <include file="$(find raptor_base)/launch/include/rplidar.launch" />
+  <include file="$(find raptor_base)/launch/include/usb_cam.launch" />
+
+  <arg name="geotiff_map_file_path" default="$(find hector_geotiff)/maps"/>
+
+  <param name="/use_sim_time" value="false"/>
+
+  <include file="$(find raptor_mapping)/launch/include/mapping_default.launch"/>
+
+  <include file="$(find hector_geotiff_launch)/launch/geotiff_mapper.launch">
+    <arg name="trajectory_source_frame_name" value="scanmatcher_frame"/>
+    <arg name="map_file_path" value="$(arg geotiff_map_file_path)"/>
+  </include>
+
+  <!--
+  <include file="$(find raptor_navigation)/launch/move_base.launch" /> 
+  -->
+</launch>
